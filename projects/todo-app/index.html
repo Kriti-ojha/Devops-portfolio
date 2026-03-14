@@ -1,0 +1,15 @@
+<h1>Todo App</h1>
+<input type="text" id="taskInput" placeholder="Enter task">
+<button onclick="addTask()">Add Task</button>
+<ul id="taskList"></ul>
+
+<script>
+  function addTask() {
+    const input = document.getElementById("taskInput");
+    const list = document.getElementById("taskList");
+    const item = document.createElement("li");
+    item.textContent = input.value;
+    list.appendChild(item);
+    input.value = "";
+  }
+</script>
