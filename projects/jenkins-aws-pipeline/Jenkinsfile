@@ -1,0 +1,48 @@
+pipeline {
+  agent any
+
+  environment {
+    // Optional: set AWS region here if needed
+    AWS_REGION = 'ap-south-1'
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        echo 'Checking out repository'
+        git url: 'https://github.com/<your-github-username>/Devops-portfolio.git', branch: 'main'
+      }
+    }
+
+    stage('Build') {
+      steps {
+        echo 'Build stage - static site has no build step'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        echo 'Test stage - placeholder for unit or lint checks'
+      }
+    }
+
+    stage('Deploy to S3') {
+      steps {
+        echo "Deploying index.html to S3"
+        sh '''
+          # Ensure AWS CLI is configured on the Jenkins agent or use IAM role
+          aws s3 cp projects/jenkins-aws-pipeline/index.html s3://my-jenkins-demo-bucket/index.html --acl public-read --region ${AWS_REGION}
+        '''
+      }
+    }
+  }
+
+  post {
+    success {
+      echo 'Pipeline completed successfully'
+    }
+    failure {
+      echo 'Pipeline failed'
+    }
+  }
+}
